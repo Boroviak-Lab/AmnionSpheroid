@@ -14,101 +14,75 @@ library(pheatmap)
 library(reshape2)
 set.seed(1)
 
-saveext = "~/Desktop/Thorsten/FINAL/Clara_Amnioids_Figuers_vTest/"
+saveext = "~/Amnioids_Figures/"
 dir.create(saveext)
 dir.create(paste(saveext,"/Markers/",sep=""))
 dir.create(paste(saveext,"/DimRed/",sep=""))
 
-
-#List of cell cycle markers loaded in with Seurat
-#List of cell cycle markers loaded in with Seurat
 s.genes <- cc.genes$s.genes
 g2m.genes <- cc.genes$g2m.genes
 
 #cType <- c("Other","Zy_CS1","4-cell_CS2","8-cell_CS2","cMor_CS3","ICM_CS3","Epi_CS3","Tb_CS3","Hyp_CS3","EmDisc_CS5","EmDisc_CS6","EmDisc_CS7","Am_CS5","Am_CS6","Am_CS7","VE_CS5","VE_CS6","VE_CS7","SYS_CS5","SYS_CS6","SYS_CS7","Tb_CS5","Tb_CS6","Tb_CS7","ExMes_CS5","ExMes_CS6","ExMes_CS7","ExMes_stalk_CS7","PGC_CS5","PGC_CS6","PGC_CS7","Gland_CS5","Gland_CS6","Gland_CS7","ReGland_CS5","ReGland_CS7","Myo_CS7","VE_CS4","Epi_CS4","Tb_CS4","Hyp_CS4","EmDisc_CS6/7","ExMes_CS6/7","PGC_CS6/7","SYS_CS6/7","Tb_CS6/7","Am","Amnoid_bead","BMP_MEF","BMP_noMEF","EmD","EmDisc","ActA_MEF","ActA_noMEF","SB43_MEF","CHIR_MEF","FGF_noMEF","Am_CS5_PGC","Am_CS5_ExMesPGC","EmDisc_CS5_Am","PGC_CS6","Stalk_CS7_PGC","EmDisc_CS7_PGC","EmDisc_CS7_Am")
 #BaseCol <- c("lightgrey","#56E600","#48BF00","#00BF30","#009926","#00E6E6","#00BFBF","#BF0489","#E6B500","#0c9cf5","#0767DA","#0233BF","#877bd6","#5F54C7","#1A0873","#F04C04","#D74404","#BF3C04","#E68600","#d17600","#BF7104","#921FE6","#8017c2","#7108a6","#e6c800","#c49a00","#967700","#967700","#E6E600","#E6E600","#E6E600","#C0C0C0","#C0C0C0","#C0C0C0","#A9A9A9","#A9A9A9","#E6E6FA","#F04C04","#00BFBF","#BF0489","#E6B500","#0767DA","#c49a00","#E6E600","#d17600","#8017c2","#7b3294","#c2a5cf","#a6dba0","#008837","#ca0020","#f4a582","#92c5de","#0571b0","#d8b365","#5ab4ac","#4d4d4d","#E6E600","#E6E600","#E6E600","#E6E600","#E6E600","#E6E600","#0233BF")
-#
 #cType <- c("Other","Zy_CS1","4-cell_CS2","8-cell_CS2","cMor_CS3","ICM_CS3","Epi_CS3","Tb_CS3","Hyp_CS3","EmDisc_CS5","EmDisc_CS6","EmDisc_CS7","Am_CS5","Am_CS6","Am_CS7","VE_CS5","VE_CS6","VE_CS7","SYS_CS5","SYS_CS6","SYS_CS7","Tb_CS5","Tb_CS6","Tb_CS7","ExMes_CS5","ExMes_CS6","ExMes_CS7","ExMes_stalk_CS7","PGC_CS5","PGC_CS6","PGC_CS7","Gland_CS5","Gland_CS6","Gland_CS7","ReGland_CS5","ReGland_CS7","Myo_CS7","VE_CS4","Epi_CS4","Tb_CS4","Hyp_CS4","EmDisc_CS6/7","ExMes_CS6/7","PGC_CS6/7","SYS_CS6/7","Tb_CS6/7","Am","Amnoid_bead","BMP_MEF","BMP_noMEF","EmD","EmDisc","ActA_MEF","ActA_noMEF","SB43_MEF","CHIR_MEF","FGF_noMEF","Am_CS5_PGC","Am_CS5_ExMesPGC","EmDisc_CS5_Am","PGC_CS6","Stalk_CS7_PGC","EmDisc_CS7_PGC","EmDisc_CS7_Am","Am_CS6_EmDisc","EmDisc_CS5_Gast","EmDisc_CS6_Am","EmDisc_CS6_Gast","EmDisc_CS7_Gast","Stalk_CS7_PGC","Gland_CS6_","ReStroma_CS5","ReStroma_CS6","ReStroma_CS7","Stroma_CS5","Stroma_CS6","Stroma_CS7","VE_CS6","VE_CS7","TB_CS5")
 #BaseCol <- c("lightgrey","#56E600","#48BF00","#00BF30","#009926","#00E6E6","#00BFBF","#BF0489","#E6B500","#0c9cf5","#0767DA","#0233BF","#877bd6","#5F54C7","#1A0873","#F04C04","#D74404","#BF3C04","#E68600","#d17600","#BF7104","#921FE6","#8017c2","#7108a6","#e6c800","#c49a00","#967700","#967700","#E6E600","#E6E600","#E6E600","#C0C0C0","#C0C0C0","#C0C0C0","#A9A9A9","#A9A9A9","#E6E6FA","#F04C04","#00BFBF","#BF0489","#E6B500","#0767DA","#c49a00","#E6E600","#d17600","#8017c2","#7b3294","#c2a5cf","#a6dba0","#008837","#ca0020","#f4a582","#92c5de","#0571b0","#d8b365","#5ab4ac","#4d4d4d","#E6E600","#E6E600","#E6E600","#E6E600","#E6E600","#E6E600","#0233BF","#5F54C7","#0c9cf5","#0767DA","#0767DA","#0233BF","#E6E600","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0",'#D74404',"black","#921FE6")
-#c(as.character(KeyCRUK2$Primary.Annotation),as.character(KeyCRUK3$Primary.Annotation),as.character(KeyCRUK$Primary.Annotation),as.character(KeyCS5$Primary.Annotation),as.character(KeyCS6$Primary.Annotation),as.character(KeyCS7$Primary.Annotation))
-
-#altHypo <- c("X3536STDY8289231Aligned.sortedByCoord.out.bam","X3536STDY8289274Aligned.sortedByCoord.out.bam")
-altHypo <- c("X3536STDY8289274Aligned.sortedByCoord.out.bam")
 
 #Now load in other datasets
-Key20307 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CRUK_SLX-20307/allQC20307.txt",sep="\t",header = T, row.names=1)
-raw_counts20307 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing data/CRUK_SLX-20307/featurecountsAll_extended_SLX-20307.csv",sep=",",header = T, row.names=1)
+#Key20307 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CRUK_SLX-20307/allQC20307.txt",sep="\t",header = T, row.names=1)
+#raw_counts20307 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing data/CRUK_SLX-20307/featurecountsAll_extended_SLX-20307.csv",sep=",",header = T, row.names=1)
+#Key20308 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CRUK_SLX-20308/allQC20308.txt",sep="\t",header = T, row.names=1)
+#raw_counts20308 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing data/CRUK_SLX-20308/featurecountsAll_extended_SLX-20308.csv",sep=",",header = T, row.names=1)
+#KeyCS5 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS5/CS5Key_210122.csv",sep=",",header = T, row.names=1)
+#raw_countsCS5 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS5/featurecountsCS5.csv",sep=",",header = T, row.names=1)
+#KeyCS6 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS6/CS6Key_210402.csv",sep=",",header = T, row.names=1)
+#raw_countsCS6 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS6/featurecountsCS6.csv",sep=",",header = T, row.names=1)
+#KeyCS7 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS7/CS7Key_210217.csv",sep=",",header = T, row.names=1) 
+#raw_countsCS7 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS7/featurecountsCS7.csv",sep=",",header = T, row.names=1)
+#KeyCRUK <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Annotations_Revision\ seq/files/CRUKKey.csv",sep=",",header = T, row.names=1) 
+#raw_countsCRUK <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Annotations_Revision\ seq/files/featurecounts-CRUK.csv",sep=",",header = T, row.names=1)
+#KeyCRUK2 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CRUK_210301_A00489_0804_AH3FMGDRXY/allQC.csv",sep=",",header = T, row.names=1) 
+#raw_countsCRUK2 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing data/CRUK_210301_A00489_0804_AH3FMGDRXY/featurecounts.csv",sep=",",header = T, row.names=1)
+#KeyCRUK3 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CRUK_210303_A00489_0808_BH3NYWDRXY/allQC.csv",sep=",",header = T, row.names=1) 
+#raw_countsCRUK3 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing data/CRUK_210303_A00489_0808_BH3NYWDRXY/featurecounts.csv",sep=",",header = T, row.names=1)
+#KeyPre <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS1-3/CS1-3Key.csv",sep=",",header = T, row.names=1) 
+#raw_countsPre <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS1-3/featurecountsCS1-3.csv",sep=",",header = T, row.names=1)
 
-Key20308 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CRUK_SLX-20308/allQC20308.txt",sep="\t",header = T, row.names=1)
-raw_counts20308 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing data/CRUK_SLX-20308/featurecountsAll_extended_SLX-20308.csv",sep=",",header = T, row.names=1)
+#marmoset_data_20307 <- CreateSeuratObject(counts = raw_counts20307[,which(Key20307$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
+#Idents(marmoset_data_20307) <- Key20307$Primary.Annotation.Old[which(Key20307$QC>0)]
+#marmoset_data_20307$Stage <- "CS6"
+#marmoset_data_20307 <- subset(marmoset_data_20307, idents = c("Tb_CS6","EmDisc_Gast_CS6","ExMes_CS6","Am_CS6","SYS_CS6","PGC_CS6","VE_CS6","EmDisc_CS6","Am_CS6_EmDisc","EmDisc_Stalk_CS6")) #,"Hyp_CS3","ICM_CS3","Tb_CS3","Epi_CS3"))
+#marmoset_data_20307 <- NormalizeData(marmoset_data_20307, verbose = FALSE)
+#marmoset_data_20307$Dataset <- "InVivo"
+#marmoset_data_20308 <- CreateSeuratObject(counts = raw_counts20308[,which(Key20308$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
+#Idents(marmoset_data_20308) <- Key20308$Primary.Annotation[which(Key20308$QC>0)]
+#marmoset_data_20308$Stage <- "CS7"
+#marmoset_data_20308 <- subset(marmoset_data_20308, idents = c("Tb_CS7","EmDisc_Gast_CS7","VE_CS7","EmDisc_CS7","Am_CS7","ExMes_stalk_CS7","PGC_CS7","SYS_CS7","ExMes_CS7","Am_CS7_EmDisc")) #,"ReStroma_CS7")) #,"Hyp_CS3","ICM_CS3","Tb_CS3","Epi_CS3"))
+#marmoset_data_20308 <- NormalizeData(marmoset_data_20308, verbose = FALSE)
+#marmoset_data_20308$Dataset <- "InVivo"
 
-KeyCS5 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS5/CS5Key_210122.csv",sep=",",header = T, row.names=1)
-raw_countsCS5 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS5/featurecountsCS5.csv",sep=",",header = T, row.names=1)
+#marmoset_data_Pre <- CreateSeuratObject(counts = raw_countsPre[,which(KeyPre$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
+#Idents(marmoset_data_Pre) <- KeyPre$Primary.lineage[which(KeyPre$QC>0)]
+#marmoset_data_Pre$LOC <- KeyPre$Location[which(KeyPre$QC>0)]
+#marmoset_data_Pre <- subset(marmoset_data_Pre, idents = c("Tb_CS3","Epi_CS3","ICM_CS3","Hyp_CS3","Zy_CS1","4-cell_CS2","8-cell_CS2","cMor_CS3"))
+#marmoset_data_Pre <- NormalizeData(marmoset_data_Pre, verbose = FALSE)
+#marmoset_data_Pre$Stage <- "Pre"
+#marmoset_data_Pre$Dataset <- "InVivo"
 
-KeyCS6 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS6/CS6Key_210402.csv",sep=",",header = T, row.names=1)
-raw_countsCS6 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS6/featurecountsCS6.csv",sep=",",header = T, row.names=1)
+#marmoset_data_CRUK <- CreateSeuratObject(counts = raw_countsCRUK[,which(KeyCRUK$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
+#Idents(marmoset_data_CRUK) <- KeyCRUK$Primary.Annotation[which(KeyCRUK$QC>0)]
+#marmoset_data_CRUK$LOC <- KeyCRUK$Loc[which(KeyCRUK$QC>0)]
+#marmoset_data_CRUK$Stage <- KeyCRUK$Stage[which(KeyCRUK$QC>0)]
+#marmoset_data_CRUK <- subset(marmoset_data_CRUK, idents = c("Tb_CS5","EmDisc_CS6","Am_CS7","VE_CS5","EmDisc_CS7","ExMes_CS6","ExMes_CS7","Am_CS6","SYS_CS7","EmDisc_CS5","EmDisc_CS7_Am","VE_CS6","ExMes_CS5","Am_CS5_PGC","Am_CS5","SYS_CS5")) #,"Hyp_CS3","ICM_CS3","Tb_CS3","Epi_CS3"))
+#marmoset_data_CRUK <- NormalizeData(marmoset_data_CRUK, verbose = FALSE)
+#marmoset_data_CRUK$Dataset <- "InVivo"
 
-KeyCS7 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS7/CS7Key_210217.csv",sep=",",header = T, row.names=1) 
-raw_countsCS7 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS7/featurecountsCS7.csv",sep=",",header = T, row.names=1)
-
-
-KeyCRUK <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Annotations_Revision\ seq/files/CRUKKey.csv",sep=",",header = T, row.names=1) 
-raw_countsCRUK <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Annotations_Revision\ seq/files/featurecounts-CRUK.csv",sep=",",header = T, row.names=1)
-
-
-#KeyCRUK <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests//Chris_sequencing\ data/CRUK_SLX-20304/CRUKKey2.csv",sep=",",header = T, row.names=1) 
-#raw_countsCRUK <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests//Chris_sequencing\ data/CRUK_SLX-20304/featurecounts-CRUK.csv",sep=",",header = T, row.names=1)
-
-KeyCRUK2 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CRUK_210301_A00489_0804_AH3FMGDRXY/allQC.csv",sep=",",header = T, row.names=1) 
-raw_countsCRUK2 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing data/CRUK_210301_A00489_0804_AH3FMGDRXY/featurecounts.csv",sep=",",header = T, row.names=1)
-
-KeyCRUK3 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CRUK_210303_A00489_0808_BH3NYWDRXY/allQC.csv",sep=",",header = T, row.names=1) 
-raw_countsCRUK3 <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing data/CRUK_210303_A00489_0808_BH3NYWDRXY/featurecounts.csv",sep=",",header = T, row.names=1)
-
-
-
-#LOAD IN EVERYTHING BUT MATERNAL
-KeyPre <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS1-3/CS1-3Key.csv",sep=",",header = T, row.names=1) 
-raw_countsPre <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/CS1-3/featurecountsCS1-3.csv",sep=",",header = T, row.names=1)
-
-marmoset_data_20307 <- CreateSeuratObject(counts = raw_counts20307[,which(Key20307$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_20307) <- Key20307$Primary.Annotation.Old[which(Key20307$QC>0)]
-marmoset_data_20307$Stage <- "CS6"
-marmoset_data_20307 <- subset(marmoset_data_20307, idents = c("Tb_CS6","EmDisc_Gast_CS6","ExMes_CS6","Am_CS6","SYS_CS6","PGC_CS6","VE_CS6","EmDisc_CS6","Am_CS6_EmDisc","EmDisc_Stalk_CS6")) #,"Hyp_CS3","ICM_CS3","Tb_CS3","Epi_CS3"))
-marmoset_data_20307 <- NormalizeData(marmoset_data_20307, verbose = FALSE)
-marmoset_data_20307$Dataset <- "InVivo"
-
-marmoset_data_20308 <- CreateSeuratObject(counts = raw_counts20308[,which(Key20308$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_20308) <- Key20308$Primary.Annotation[which(Key20308$QC>0)]
-marmoset_data_20308$Stage <- "CS7"
-marmoset_data_20308 <- subset(marmoset_data_20308, idents = c("Tb_CS7","EmDisc_Gast_CS7","VE_CS7","EmDisc_CS7","Am_CS7","ExMes_stalk_CS7","PGC_CS7","SYS_CS7","ExMes_CS7","Am_CS7_EmDisc")) #,"ReStroma_CS7")) #,"Hyp_CS3","ICM_CS3","Tb_CS3","Epi_CS3"))
-marmoset_data_20308 <- NormalizeData(marmoset_data_20308, verbose = FALSE)
-marmoset_data_20308$Dataset <- "InVivo"
-
-marmoset_data_Pre <- CreateSeuratObject(counts = raw_countsPre[,which(KeyPre$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_Pre) <- KeyPre$Primary.lineage[which(KeyPre$QC>0)]
-marmoset_data_Pre$LOC <- KeyPre$Location[which(KeyPre$QC>0)]
-marmoset_data_Pre <- subset(marmoset_data_Pre, idents = c("Tb_CS3","Epi_CS3","ICM_CS3","Hyp_CS3","Zy_CS1","4-cell_CS2","8-cell_CS2","cMor_CS3"))
-marmoset_data_Pre <- NormalizeData(marmoset_data_Pre, verbose = FALSE)
-marmoset_data_Pre$Stage <- "Pre"
-marmoset_data_Pre$Dataset <- "InVivo"
-
-marmoset_data_CRUK <- CreateSeuratObject(counts = raw_countsCRUK[,which(KeyCRUK$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_CRUK) <- KeyCRUK$Primary.Annotation[which(KeyCRUK$QC>0)]
-marmoset_data_CRUK$LOC <- KeyCRUK$Loc[which(KeyCRUK$QC>0)]
-marmoset_data_CRUK$Stage <- KeyCRUK$Stage[which(KeyCRUK$QC>0)]
-marmoset_data_CRUK <- subset(marmoset_data_CRUK, idents = c("Tb_CS5","EmDisc_CS6","Am_CS7","VE_CS5","EmDisc_CS7","ExMes_CS6","ExMes_CS7","Am_CS6","SYS_CS7","EmDisc_CS5","EmDisc_CS7_Am","VE_CS6","ExMes_CS5","Am_CS5_PGC","Am_CS5","SYS_CS5")) #,"Hyp_CS3","ICM_CS3","Tb_CS3","Epi_CS3"))
-marmoset_data_CRUK <- NormalizeData(marmoset_data_CRUK, verbose = FALSE)
-marmoset_data_CRUK$Dataset <- "InVivo"
-
-marmoset_data_CRUK2 <- CreateSeuratObject(counts = raw_countsCRUK2[,which(KeyCRUK2$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_CRUK2) <- KeyCRUK2$Primary.Annotation[which(KeyCRUK2$QC>0)]
-marmoset_data_CRUK2$LOC <- KeyCRUK2$Loc[which(KeyCRUK2$QC>0)]
-marmoset_data_CRUK2$Stage <- KeyCRUK2$Stage[which(KeyCRUK2$QC>0)]
-marmoset_data_CRUK2 <- subset(marmoset_data_CRUK2, idents = c("EmDisc_CS6","Am_CS6","EmDisc_CS5","Am_CS6_EmDisc","EmDisc_CS6_Gast","PGC_CS6","EmDisc_CS6_Am","ExMes_CS6","SYS_CS6","VE_CS6","Tb_CS6")) #,"Hyp_CS3","ICM_CS3","Tb_CS3","Epi_CS3"))
-marmoset_data_CRUK2 <- NormalizeData(marmoset_data_CRUK2, verbose = FALSE)
-marmoset_data_CRUK2Dataset <- "InVivo"
-
+#marmoset_data_CRUK2 <- CreateSeuratObject(counts = raw_countsCRUK2[,which(KeyCRUK2$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
+#Idents(marmoset_data_CRUK2) <- KeyCRUK2$Primary.Annotation[which(KeyCRUK2$QC>0)]
+#marmoset_data_CRUK2$LOC <- KeyCRUK2$Loc[which(KeyCRUK2$QC>0)]
+#marmoset_data_CRUK2$Stage <- KeyCRUK2$Stage[which(KeyCRUK2$QC>0)]
+#marmoset_data_CRUK2 <- subset(marmoset_data_CRUK2, idents = c("EmDisc_CS6","Am_CS6","EmDisc_CS5","Am_CS6_EmDisc","EmDisc_CS6_Gast","PGC_CS6","EmDisc_CS6_Am","ExMes_CS6","SYS_CS6","VE_CS6","Tb_CS6")) #,"Hyp_CS3","ICM_CS3","Tb_CS3","Epi_CS3"))
+#marmoset_data_CRUK2 <- NormalizeData(marmoset_data_CRUK2, verbose = FALSE)
+#marmoset_data_CRUK2Dataset <- "InVivo"
 
 #marmoset_data_CRUK3 <- CreateSeuratObject(counts = raw_countsCRUK3[,which(KeyCRUK3$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
 #Idents(marmoset_data_CRUK3) <- KeyCRUK3$Primary.Annotation[which(KeyCRUK3$QC>0)]
@@ -118,399 +92,6 @@ marmoset_data_CRUK2Dataset <- "InVivo"
 #marmoset_data_CRUK3 <- NormalizeData(marmoset_data_CRUK3, verbose = FALSE)
 #marmoset_data_CRUK3$Dataset <- "InVivo"
 
-marmoset_data_CRUK3 <- CreateSeuratObject(counts = raw_countsCRUK3[,which(KeyCRUK3$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_CRUK3) <- KeyCRUK3$Primary.Annotation[which(KeyCRUK3$QC>0)]
-marmoset_data_CRUK3$LOC <- KeyCRUK3$Loc[which(KeyCRUK3$QC>0)]
-marmoset_data_CRUK3$Stage <- KeyCRUK3$Stage[which(KeyCRUK3$QC>0)]
-marmoset_data_CRUK3 <- subset(marmoset_data_CRUK3, idents = c("Am_CS7","EmDisc_CS7","EmDisc_CS7_Gast","PGC_CS7","VE_CS7","SYS_CS7")) #,"Stroma_CS6")) 
-marmoset_data_CRUK3 <- NormalizeData(marmoset_data_CRUK3, verbose = FALSE)
-marmoset_data_CRUK3$Dataset <- "InVivo"
-
-marmoset_data_CS5 <- CreateSeuratObject(counts = raw_countsCS5[,which(KeyCS5$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_CS5) <- KeyCS5$Primary.Annotation[which(KeyCS5$QC>0)]
-marmoset_data_CS5$LOC <- KeyCS5$Location[which(KeyCS5$QC>0)]
-marmoset_data_CS5$Stage <- "CS5"
-marmoset_data_CS5 <- subset(marmoset_data_CS5, idents = c("Tb_CS5","ExMes_CS5","EmDisc_CS5","SYS_CS5","Am_CS5","VE_CS5","Am_CS5_PGC","EmDisc_CS5_Am")) #","Gland_CS5","ReGland_CS5","ReStroma_CS5")) 
-marmoset_data_CS5 <- NormalizeData(marmoset_data_CS5, verbose = FALSE)
-marmoset_data_CS5$Dataset <- "InVivo"
-
-marmoset_data_CS6 <- CreateSeuratObject(counts = raw_countsCS6[,which(KeyCS6$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_CS6) <- KeyCS6$Primary.Anotation[which(KeyCS6$QC>0)]
-marmoset_data_CS6$LOC <- KeyCS6$Location[which(KeyCS6$QC>0)]
-marmoset_data_CS6$Stage <- "CS6"
-marmoset_data_CS6 <- subset(marmoset_data_CS6, idents = c("Tb_CS6","ExMes_CS6","EmDisc_CS6","SYS_CS6","Am_CS6","VE_CS6","PGC_CS6","EmDisc_gast_CS6","EmDisc_stalk_CS6")) #,"Gland_CS6","Stroma_CS6","ReStroma_CS6"))
-marmoset_data_CS6 <- NormalizeData(marmoset_data_CS6, verbose = FALSE)
-marmoset_data_CS6$Dataset <- "InVivo"
-
-marmoset_data_CS7 <- CreateSeuratObject(counts = raw_countsCS7[,which(KeyCS7$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_CS7) <- KeyCS7$Primary.Annotation[which(KeyCS7$QC>0)]
-marmoset_data_CS7$Stage <- "CS7"
-marmoset_data_CS7$LOC <- KeyCS7$Location[which(KeyCS7$QC>0)]
-marmoset_data_CS7 <- subset(marmoset_data_CS7, idents = c("Tb_CS7","ExMes_CS7","EmDisc_CS7","SYS_CS7","Am_CS7","Stalk_CS7_PGC","EmDisc_CS7_PGC","ExMes_stalk_CS7","EmDisc_stalk_CS7","Stalk_CS7")) #"Gland_CS7","ReStroma_CS7","ReGland_CS7","Myo_CS7")) 
-marmoset_data_CS7 <- NormalizeData(marmoset_data_CS7, verbose = FALSE)
-marmoset_data_CS7$Dataset <- "InVivo"
-
-
-marmoset_dataInVivo <- merge(marmoset_data_CS5, y = c(marmoset_data_Pre,marmoset_data_CS6,marmoset_data_CS7,marmoset_data_CRUK,marmoset_data_CRUK2,marmoset_data_CRUK3,marmoset_data_20307,marmoset_data_20308), project = "merged")
-marmoset_dataInVivo$Dataset <- "2) Marmoset in vivo"
-
-marmoset_dataInVivo2 <- marmoset_dataInVivo
-marmoset_dataInVivo2 <- FindVariableFeatures(marmoset_dataInVivo2, selection.method = "vst", nfeatures = 20000)
-marmoset_dataInVivo2 <- ScaleData(marmoset_dataInVivo2, verbose = FALSE)
-marmoset_dataInVivo2 <- RunPCA(marmoset_dataInVivo2, npcs = 20, verbose = FALSE)
-marmoset_dataInVivo2 <- RunUMAP(marmoset_dataInVivo2, reduction = "pca", dims = 1:20)
-marmoset_dataInVivo2 <- RunTSNE(marmoset_dataInVivo2, reduction = "pca", dims = 1:20)
-marmoset_dataInVivo2 <- FindNeighbors(marmoset_dataInVivo2, reduction = "pca", dims = 1:20)
-
-newID <- as.character(Idents(marmoset_dataInVivo2))
-newID[which(newID=="Am_CS5_PGC")] <- "Am_CS5"
-newID[which(newID=="EmDisc_CS5_Am")] <- "EmDisc_CS5"
-newID[which(newID=="EmDisc_gast_CS6 ")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_Gast_CS6")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_stalk_CS6")] <- "Stalk_CS6"
-newID[which(newID=="EmDisc_stalk_CS7")] <- "Stalk_CS7"
-newID[which(newID=="Stalk_CS7_PGC")] <- "PGC_CS7"
-newID[which(newID=="EmDisc_CS7_PGC")] <- "PGC_CS7"
-newID[which(newID=="ExMes_stalk_CS7")] <- "Stalk_CS7"
-newID[which(newID=="EmDisc_CS7_Am")] <- "EmDisc_CS7"
-newID[which(newID=="EmDisc_CS7_Am")] <- "EmDisc_CS7"
-newID[which(newID=="Am_CS6_EmDisc")] <- "Am_CS6"
-newID[which(newID=="EmDisc_CS6_Gast")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_gast_CS6")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_CS6_Am")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_Stalk_CS6")] <- "Stalk_CS6"
-newID[which(newID=="EmDisc_Gast_CS7")] <- "EmDisc_CS7"
-newID[which(newID=="EmDisc_CS7_Gast")] <- "EmDisc_CS7"
-newID[which(newID=="EmDisc_CS6_Gast")] <- "EmDisc_CS6"
-newID[which(newID=="Am_CS7_EmDisc")] <- "Am_CS7"
-newID[which(newID=="cMor_CS3")] <- "cMor_CS2"
-Idents(marmoset_dataInVivo2) <- newID
-
-cType <- c("2307","2308","Other","Zy_CS1","4-cell_CS2","8-cell_CS2","cMor_CS2","ICM_CS3","Epi_CS3","Tb_CS3","Hyp_CS3","EmDisc_CS5","EmDisc_CS6","EmDisc_CS7","Am_CS5","Am_CS6","Am_CS7","VE_CS5","VE_CS6","VE_CS7","SYS_CS5","SYS_CS6","SYS_CS7","Tb_CS5","Tb_CS6","Tb_CS7","ExMes_CS5","ExMes_CS6","ExMes_CS7","Stalk_CS7","PGC_CS5","PGC_CS6","PGC_CS7","Gland_CS5","Gland_CS6","Gland_CS7","ReGland_CS5","ReGland_CS7","Myo_CS7","VE_CS4","Epi_CS4","Tb_CS4","Hyp_CS4","EmDisc_CS6/7","ExMes_CS6/7","PGC_CS6/7","SYS_CS6/7","Tb_CS6/7","Am","Amnoid_bead","BMP_MEF","BMP_noMEF","EmD","EmDisc","ActA_MEF","ActA_noMEF","SB43_MEF","CHIR_MEF","FGF_noMEF","Am_CS5_PGC","Am_CS5_ExMesPGC","EmDisc_CS5_Am","PGC_CS6","Stalk_CS7_PGC","EmDisc_CS7_PGC","EmDisc_CS7_Am","Am_CS6_EmDisc","EmDisc_CS5_Gast","EmDisc_CS6_Am","EmDisc_CS6_Gast","EmDisc_CS7_Gast","Stalk_CS7_PGC","Gland_CS6_","ReStroma_CS5","ReStroma_CS6","ReStroma_CS7","Stroma_CS5","Stroma_CS6","Stroma_CS7","VE_CS6","VE_CS7","Am_CS7_EmDisc","EmDisc_Gast_CS6","EmDisc_Gast_CS7","Stalk_CS6")
-BaseCol <- c("lightgrey","lightgrey","lightgrey","#56E600","#48BF00","#00BF30","#009926","#00E6E6","#00BFBF","#BF0489","#E6B500","#0c9cf5","#0767DA","#0233BF","#877bd6","#5F54C7","#1A0873","#F04C04","#D74404","#BF3C04","#E68600","#d17600","#BF7104","#921FE6","#8017c2","#7108a6","#e6c800","#c49a00","#967700","#967700","#E6E600","#E6E600","#E6E600","#C0C0C0","#C0C0C0","#C0C0C0","#A9A9A9","#A9A9A9","#E6E6FA","#F04C04","#00BFBF","#BF0489","#E6B500","#0767DA","#c49a00","#E6E600","#d17600","#8017c2","#7b3294","#c2a5cf","#a6dba0","#008837","#ca0020","#f4a582","#92c5de","#0571b0","#d8b365","#5ab4ac","#4d4d4d","#E6E600","#E6E600","#E6E600","#E6E600","#E6E600","#E6E600","#0233BF","#5F54C7","#0c9cf5","#0767DA","#0767DA","#0233BF","#E6E600","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0",'#D74404',"black","#5F54C7","#0767DA","#0233BF","#c49a00")
-
-colind <- integer( length( levels(Idents(marmoset_dataInVivo2)) )  )
-for (i in 1:length( levels(Idents(marmoset_dataInVivo2)) ) ) {
-  colind[i] <- which(cType==levels(Idents(marmoset_dataInVivo2))[i])
-}
-coluse <- BaseCol[colind]
-
-DimPlot(marmoset_dataInVivo2, cols = coluse, pt.size = 4, reduction = "umap", split.by = "Dataset", label = TRUE, repel = TRUE) 
-ggsave(filename=paste(saveext,"/DimRed/UMAP_All.pdf",sep=""),width = 20, height = 16, useDingbats = FALSE)
-
-DimPlot(marmoset_dataInVivo2, cols = coluse, pt.size = 4, reduction = "pca", split.by = "Dataset", label = TRUE, repel = TRUE) 
-ggsave(filename=paste(saveext,"/DimRed/PCA_All.pdf",sep=""),width = 20, height = 16, useDingbats = FALSE)
-
-DimPlot(marmoset_dataInVivo2, cols = coluse, pt.size = 4, reduction = "tsne", split.by = "Dataset", label = TRUE, repel = TRUE) 
-ggsave(filename=paste(saveext,"/DimRed/TSNE_All.pdf",sep=""),width = 20, height = 16, useDingbats = FALSE)
-
-
-KeyInVitro <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/InVitro/InVitroKey_merged.csv",sep=",",header = T, row.names=1) 
-raw_countsInVitro <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/InVitro/featurecountsInVitro_merged.csv",sep=",",header = T, row.names=1)
-
-marmoset_data_InVitro <- CreateSeuratObject(counts = raw_countsInVitro[,which(KeyInVitro$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_InVitro) <- KeyInVitro$Primary.lineage[which(KeyInVitro$QC>0)]
-marmoset_data_InVitro$LOC <- "Invitro"
-marmoset_data_InVitro <- subset(marmoset_data_InVitro, idents = c("EmD","EmDisc","Am","Amnoid_bead","CHIR_MEF","SB43_MEF","BMP_MEF","ActA_MEF","FGF_noMEF","BMP_noMEF","ActA_noMEF"))
-marmoset_data_InVitro <- NormalizeData(marmoset_data_InVitro, verbose = FALSE)
-marmoset_data_InVitro$Stage <- "Invitro"
-marmoset_data_InVitro$Dataset <- "InVitro"
-
-marmoset_dataInVivo <- merge(marmoset_data_CS5, y = c(marmoset_data_Pre,marmoset_data_CS6,marmoset_data_CS7,marmoset_data_CRUK,marmoset_data_CRUK2,marmoset_data_CRUK3,marmoset_data_20307,marmoset_data_20308,marmoset_data_InVitro), project = "merged")
-marmoset_dataInVivo$Dataset <- "2) Marmoset in vivo"
-marmoset_dataInVivo2 <- marmoset_dataInVivo
-marmoset_dataInVivo2 <- FindVariableFeatures(marmoset_dataInVivo2, selection.method = "vst", nfeatures = 3000)
-marmoset_dataInVivo2 <- ScaleData(marmoset_dataInVivo2, verbose = FALSE)
-marmoset_dataInVivo2 <- RunPCA(marmoset_dataInVivo2, npcs = 20, verbose = FALSE)
-marmoset_dataInVivo2 <- RunUMAP(marmoset_dataInVivo2, reduction = "pca", dims = 1:20)
-marmoset_dataInVivo2 <- RunTSNE(marmoset_dataInVivo2, reduction = "pca", dims = 1:20)
-marmoset_dataInVivo2 <- FindNeighbors(marmoset_dataInVivo2, reduction = "pca", dims = 1:20)
-
-
-newID <- as.character(Idents(marmoset_dataInVivo2))
-newID[which(newID=="Am_CS5_PGC")] <- "Am_CS5"
-newID[which(newID=="EmDisc_CS5_Am")] <- "EmDisc_CS5"
-newID[which(newID=="EmDisc_gast_CS6 ")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_Gast_CS6")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_stalk_CS6")] <- "Stalk_CS6"
-newID[which(newID=="EmDisc_stalk_CS7")] <- "Stalk_CS7"
-newID[which(newID=="Stalk_CS7_PGC")] <- "PGC_CS7"
-newID[which(newID=="EmDisc_CS7_PGC")] <- "PGC_CS7"
-newID[which(newID=="ExMes_stalk_CS7")] <- "Stalk_CS7"
-newID[which(newID=="EmDisc_CS7_Am")] <- "EmDisc_CS7"
-newID[which(newID=="EmDisc_CS7_Am")] <- "EmDisc_CS7"
-newID[which(newID=="Am_CS6_EmDisc")] <- "Am_CS6"
-newID[which(newID=="EmDisc_CS6_Gast")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_gast_CS6")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_CS6_Am")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_Stalk_CS6")] <- "Stalk_CS6"
-newID[which(newID=="EmDisc_Gast_CS7")] <- "EmDisc_CS7"
-newID[which(newID=="EmDisc_CS7_Gast")] <- "EmDisc_CS7"
-newID[which(newID=="EmDisc_CS6_Gast")] <- "EmDisc_CS6"
-newID[which(newID=="Am_CS7_EmDisc")] <- "Am_CS7"
-newID[which(newID=="cMor_CS3")] <- "cMor_CS2"
-newID[which(newID=="EmD")] <- "EmDisc_#1"
-newID[which(newID=="EmDisc")] <- "EmDisc_#2"
-newID[which(newID=="Am")] <- "Amnioid_#1"
-newID[which(newID=="Amnoid_bead")] <- "Amnioid_#2"
-
-Idents(marmoset_dataInVivo2) <- newID
-
-cType <- c("2307","2308","Other","Zy_CS1","4-cell_CS2","8-cell_CS2","cMor_CS2","ICM_CS3","Epi_CS3","Tb_CS3","Hyp_CS3","EmDisc_CS5","EmDisc_CS6","EmDisc_CS7","Am_CS5","Am_CS6","Am_CS7","VE_CS5","VE_CS6","VE_CS7","SYS_CS5","SYS_CS6","SYS_CS7","Tb_CS5","Tb_CS6","Tb_CS7","ExMes_CS5","ExMes_CS6","ExMes_CS7","Stalk_CS7","PGC_CS5","PGC_CS6","PGC_CS7","Gland_CS5","Gland_CS6","Gland_CS7","ReGland_CS5","ReGland_CS7","Myo_CS7","VE_CS4","Epi_CS4","Tb_CS4","Hyp_CS4","EmDisc_CS6/7","ExMes_CS6/7","PGC_CS6/7","SYS_CS6/7","Tb_CS6/7","Amnioid_#1","Amnioid_#2","BMP_MEF","BMP_noMEF","EmDisc_#1","EmDisc_#2","ActA_MEF","ActA_noMEF","SB43_MEF","CHIR_MEF","FGF_noMEF","Am_CS5_PGC","Am_CS5_ExMesPGC","EmDisc_CS5_Am","PGC_CS6","Stalk_CS7_PGC","EmDisc_CS7_PGC","EmDisc_CS7_Am","Am_CS6_EmDisc","EmDisc_CS5_Gast","EmDisc_CS6_Am","EmDisc_CS6_Gast","EmDisc_CS7_Gast","Stalk_CS7_PGC","Gland_CS6_","ReStroma_CS5","ReStroma_CS6","ReStroma_CS7","Stroma_CS5","Stroma_CS6","Stroma_CS7","VE_CS6","VE_CS7","Am_CS7_EmDisc","EmDisc_Gast_CS6","EmDisc_Gast_CS7","Stalk_CS6")
-BaseCol <- c("lightgrey","lightgrey","lightgrey","#56E600","#48BF00","#00BF30","#009926","#00E6E6","#00BFBF","#BF0489","#E6B500","#0c9cf5","#0767DA","#0233BF","#877bd6","#5F54C7","#1A0873","#F04C04","#D74404","#BF3C04","#E68600","#d17600","#BF7104","#921FE6","#8017c2","#7108a6","#e6c800","#c49a00","#967700","#967700","#E6E600","#E6E600","#E6E600","#C0C0C0","#C0C0C0","#C0C0C0","#A9A9A9","#A9A9A9","#E6E6FA","#F04C04","#00BFBF","#BF0489","#E6B500","#0767DA","#c49a00","#E6E600","#d17600","#8017c2","#7b3294","#c2a5cf","#a6dba0","#008837","#ca0020","#f4a582","#92c5de","#0571b0","#d8b365","#5ab4ac","#4d4d4d","#E6E600","#E6E600","#E6E600","#E6E600","#E6E600","#E6E600","#0233BF","#5F54C7","#0c9cf5","#0767DA","#0767DA","#0233BF","#E6E600","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0",'#D74404',"black","#5F54C7","#0767DA","#0233BF","#c49a00")
-
-colind <- integer( length( levels(Idents(marmoset_dataInVivo2)) )  )
-for (i in 1:length( levels(Idents(marmoset_dataInVivo2)) ) ) {
-  colind[i] <- which(cType==levels(Idents(marmoset_dataInVivo2))[i])
-}
-coluse <- BaseCol[colind]
-
-DimPlot(marmoset_dataInVivo2, cols = coluse, pt.size = 4, reduction = "umap", split.by = "Dataset", label = TRUE, repel = TRUE) 
-ggsave(filename=paste(saveext,"/DimRed/UMAP_All_Invit.pdf",sep=""),width = 20, height = 16, useDingbats = FALSE)
-DimPlot(marmoset_dataInVivo2, cols = coluse, pt.size = 8, reduction = "pca", split.by = "Dataset", label = TRUE, repel = TRUE) 
-ggsave(filename=paste(saveext,"/DimRed/PCA_All_Invit.pdf",sep=""),width = 80, height = 40,limitsize = FALSE, useDingbats = FALSE)
-DimPlot(marmoset_dataInVivo2, cols = coluse, pt.size = 4, reduction = "tsne", split.by = "Dataset", label = TRUE, repel = TRUE) 
-ggsave(filename=paste(saveext,"/DimRed/TSNE_All_Invit.pdf",sep=""),width = 20, height = 16, useDingbats = FALSE)
-
-
-
-
-exps <- c("Epi_CS3","EmDisc_CS5","EmDisc_CS6","EmDisc_CS7","Am_CS5","Am_CS6","Am_CS7","SYS_CS5","SYS_CS6","SYS_CS7","Tb_CS5","Tb_CS6","Tb_CS7","VE_CS5","VE_CS6","VE_CS7","ExMes_CS5","ExMes_CS6","ExMes_CS7","Stalk_CS6","Salk_CS7")
-expe2 <- c("EmDisc_#2","EmDisc_#1","ActA_MEF","ActA_noMEF","FGF_noMEF","Amnioid_#1","Amnioid_#2","BMP_noMEF","BMP_MEF","SB43_MEF","CHIR_MEF")
-
-#Finally generate correlations for identity mapping
-subs1 <- which(Idents(marmoset_dataInVivo2) %in% exps)
-subs2 <- which(Idents(marmoset_dataInVivo2) %in% expe2)
-Mat1 <- GetAssayData(marmoset_dataInVivo2,assay = "RNA")
-C1 <- cor(as.matrix(Mat1[,subs1]),as.matrix(Mat1[,subs2]), method = "pearson")
-write.csv(as.data.frame(C1), file=paste(saveext,"/Correlation_alltissues_pearson_RNA_alltissues.csv",sep=""))
-write.csv(as.data.frame(Idents(marmoset_dataInVivo2)[subs1]), file=paste(saveext,"/Idents_alltissues1_RNA_alltissues.csv",sep=""))
-write.csv(as.data.frame(Idents(marmoset_dataInVivo2)[subs2]), file=paste(saveext,"/Idents_alltissues2_RNA_alltissues.csv",sep=""))
-
-
-AvExp <- AverageExpression(marmoset_dataInVivo2)
-
-
-#Marker genes
-FortyEight <- c("OOEP","TCL1A","WEE2",
-                "IL1RN","NOV","ZNF80",
-                "SPIC","ESRRB","STAT3",
-                "KLF17","SOX15",
-                "POU5F1","NANOG","SOX2","SFRP2","DNMT3B",
-                "T","MIXL1","EOMES","LHX1","SNAI2","FOXA2",
-                "PAX6","SOX1",
-                "GATA3",
-                "TFAP2C","TFAP2A","VTCN1","WNT6","ISL1",
-                "SOX17","PRDM1","NANOS3","PRDM14",
-                "GATA6","GATA4","PDGFRA","APOA1","TTR","APOB","HAND2","TBX4","HGF",
-                "JAM2","GATA2","CGB3","CGA") 
-
-FortyEight2 <- c("SOX2","POU5F1","NANOG","SFRP2","DNMT3B",
-                "T","MIXL1","EOMES",
-                "LHX1",
-                "SNAI2",
-                "PDGFRA",
-                "SOX17",
-                "FOXA2",
-                "GATA3","TFAP2C","TFAP2A","VTCN1","WNT6","ISL1")
-
-
-mat_breaks <- seq(0, 2, length.out = 20)
-
-annotationL <- c("Zy_CS1","4-cell_CS2","8-cell_CS2","cMor_CS2","ICM_CS3","Epi_CS3","Hyp_CS3","Tb_CS3",
-          "EmDisc_CS5","EmDisc_CS6","EmDisc_CS7",
-          "EmDisc_#1","EmDisc_#2","ActA_MEF","ActA_noMEF","FGF_noMEF","CHIR_MEF",
-          "Am_CS5","Am_CS6","Am_CS7",
-          "Amnioid_#1","Amnioid_#2","BMP_noMEF","BMP_MEF","SB43_MEF",
-          "PGC_CS6","PGC_CS7",
-          "VE_CS5","VE_CS6","VE_CS7",
-          "SYS_CS5","SYS_CS6","SYS_CS7",
-          "ExMes_CS5","ExMes_CS6","ExMes_CS7","Stalk_CS6","Stalk_CS7",
-          "Tb_CS5","Tb_CS6","Tb_CS7"
-         )
-
-exps <- annotationL
-
-mycolors <- c("#56E600","#48BF00","#00BF30","#009926","#00E6E6","#00BFBF","#E6B500","#BF0489",    
-                 "#0c9cf5","#0767DA","#0233BF",
-                "#ca0020",	"#f4a582", "#92c5de", "#0571b0", "#4d4d4d","#5ab4ac",
-                 "#877bd6","#5F54C7","#1A0873",
-                 "#7b3294",	"#c2a5cf", "#008837", "#a6dba0", "#d8b365",
-                 "#E6E600","#E6E600",
-                 "#F04C04",	"#D74404",	"#BF3C04",
-                 "#E68600",	"#d17600",	"#BF7104",
-              "#e6c800",	"#c49a00",	"#967700","#c49a00",	"#967700",
-              "#921FE6",	"#8017c2",	"#7108a6")
-
-X <- (AvExp$RNA[FortyEight,exps])
-
-annotation_col = data.frame(Stage = factor(colnames(X)))
-rownames(annotation_col) <- colnames(X)
-
-names(mycolors) <- colnames(X)
-anno_colors <- list(Stage = mycolors)
-redblue1<-colorRampPalette(c("#00B0F0","#FFFFFF","#FF0B07"))
-
-mat_breaks <- seq(0, 100, length.out = 20)
-pheatmap(X*100,color =  redblue1(20),gaps_col=c(5,8,11,17,20,25,27,30,33,38), gaps_row=c(3,6,11,16,22,24,30,34,37,42),breaks = mat_breaks, border_color = NA,annotation_col = annotation_col, annotation_colors = anno_colors, cluster_rows=FALSE, cluster_cols=FALSE,  filename = paste(saveext,"/DimRed/Fullheamtap",".pdf",sep="") ,width=10,height=10)
-mat_breaks <- seq(-2, 2, length.out = 20)
-pheatmap(log2(X+1),color =redblue1(20),gaps_col=c(5,8,11,17,20,25,27,30,33,38),gaps_row=c(3,6,11,16,22,24,30,34,37,42),breaks = mat_breaks, border_color = NA,annotation_col = annotation_col, annotation_colors = anno_colors, cluster_rows=FALSE, cluster_cols=FALSE, scale = "row",  filename = paste(saveext,"/DimRed/Fullheamtapscale",".pdf",sep=""),width=10,height=10 )
-
-annotationL <- c("Zy_CS1","4-cell_CS2","8-cell_CS2","cMor_CS2","ICM_CS3","Epi_CS3","Hyp_CS3","Tb_CS3",
-                 "EmDisc_CS5","EmDisc_CS6","EmDisc_CS7",
-                 "EmDisc_#1","EmDisc_#2",
-                 "Am_CS5","Am_CS6","Am_CS7",
-                 "Amnioid_#1","Amnioid_#2",
-                 "PGC_CS6","PGC_CS7",
-                 "VE_CS5","VE_CS6","VE_CS7",
-                 "SYS_CS5","SYS_CS6","SYS_CS7",
-                 "ExMes_CS5","ExMes_CS6","ExMes_CS7","Stalk_CS6","Stalk_CS7",
-                 "Tb_CS5","Tb_CS6","Tb_CS7"
-)
-
-exps <- annotationL
-
-mycolors <- c("#56E600","#48BF00","#00BF30","#009926","#00E6E6","#00BFBF","#E6B500","#BF0489",    
-              "#0c9cf5","#0767DA","#0233BF",
-              "#ca0020",	"#f4a582",
-              "#877bd6","#5F54C7","#1A0873",
-              "#7b3294",	"#c2a5cf",
-              "#E6E600","#E6E600",
-              "#F04C04",	"#D74404",	"#BF3C04",
-              "#E68600",	"#d17600",	"#BF7104",
-              "#e6c800",	"#c49a00",	"#967700",	"#c49a00",	"#967700",
-              "#921FE6",	"#8017c2",	"#7108a6")
-
-X <- (AvExp$RNA[FortyEight,exps])
-
-annotation_col = data.frame(Stage = factor(colnames(X)))
-rownames(annotation_col) <- colnames(X)
-
-names(mycolors) <-colnames(X)
-anno_colors <- list(Stage = mycolors)
-redblue1<-colorRampPalette(c("#00B0F0","#FFFFFF","#FF0B07"))
-
-mat_breaks <- seq(0, 100, length.out = 20)
-pheatmap(X*100,color =  redblue1(20),gaps_col=c(5,8,11,13,16,18,20,23,26,31,34), gaps_row=c(3,6,11,16,22,24,30,34,37,42),breaks = mat_breaks, border_color = NA,annotation_col = annotation_col, annotation_colors = anno_colors, cluster_rows=FALSE, cluster_cols=FALSE,  filename = paste(saveext,"/DimRed/Fullheamtap2",".pdf",sep="") ,width=10,height=10)
-mat_breaks <- seq(-2, 2, length.out = 20)
-pheatmap(log2(X+1),color =redblue1(20),gaps_col=c(5,8,11,13,16,18,20,23,26,31,34),gaps_row=c(3,6,11,16,22,24,30,34,37,42),breaks = mat_breaks, border_color = NA,annotation_col = annotation_col, annotation_colors = anno_colors, cluster_rows=FALSE, cluster_cols=FALSE, scale = "row",  filename = paste(saveext,"/DimRed/Fullheamtapscale2",".pdf",sep=""),width=10,height=10 )
-
-
-annotationL <- c("EmDisc_CS5","EmDisc_CS6","EmDisc_CS7",
-                 "EmDisc_#1","EmDisc_#2","ActA_MEF","ActA_noMEF","FGF_noMEF","CHIR_MEF",
-                 "Am_CS5","Am_CS6","Am_CS7",
-                 "Amnioid_#1","Amnioid_#2","BMP_noMEF","BMP_MEF","SB43_MEF")
-
-exps <- annotationL
-
-mycolors <- c("#0c9cf5","#0767DA","#0233BF",
-              "#ca0020",	"#f4a582", "#92c5de", "#0571b0", "#4d4d4d","#5ab4ac",
-              "#877bd6","#5F54C7","#1A0873",
-              "#7b3294",	"#c2a5cf", "#008837", "#a6dba0", "#d8b365")
-
-X <- (AvExp$RNA[FortyEight2,exps])
-
-annotation_col = data.frame(Stage = factor(colnames(X)))
-rownames(annotation_col) <- colnames(X)
-
-names(mycolors) <- colnames(X)
-anno_colors <- list(Stage = mycolors)
-redblue1<-colorRampPalette(c("#00B0F0","#FFFFFF","#FF0B07"))
-
-mat_breaks <- seq(0, 100, length.out = 20)
-pheatmap(X*100,color =  redblue1(20),gaps_col=c(3,9,12), gaps_row=c(5,13),breaks = mat_breaks, border_color = NA,annotation_col = annotation_col, annotation_colors = anno_colors, cluster_rows=FALSE, cluster_cols=FALSE,  filename = paste(saveext,"/DimRed/Fullheamtap3",".pdf",sep="") ,width=6,height=5)
-mat_breaks <- seq(-2, 2, length.out = 20)
-pheatmap(log2(X+1),color =redblue1(20),gaps_col=c(3,9,12),gaps_row=c(5,13),breaks = mat_breaks, border_color = NA,annotation_col = annotation_col, annotation_colors = anno_colors, cluster_rows=FALSE, cluster_cols=FALSE, scale = "row",  filename = paste(saveext,"/DimRed/Fullheamtapscale3",".pdf",sep=""),width=6,height=5 )
-
-
-#Standard heatmaps are done. Now for the cross correlaions.
-exps <- c("Zy_CS1","4-cell_CS2","8-cell_CS2","cMor_CS2","ICM_CS3","Epi_CS3","Hyp_CS3","Tb_CS3",
-                 "EmDisc_CS5","EmDisc_CS6","EmDisc_CS7",
-                 "Am_CS5","Am_CS6","Am_CS7",
-                 "VE_CS5","VE_CS6","VE_CS7",
-                 "SYS_CS5","SYS_CS6","SYS_CS7",
-                 "ExMes_CS5","ExMes_CS6","ExMes_CS7","Stalk_CS6","Stalk_CS7",
-                 "Tb_CS5","Tb_CS6","Tb_CS7")
-
-#exps <- c("Zy_CS1","4-cell_CS2","8-cell_CS2","cMor_CS2","ICM_CS3","Epi_CS3","Hyp_CS3","Tb_CS3",
-#          "EmDisc_CS5","EmDisc_CS6","EmDisc_CS7",
-#          "Am_CS5","Am_CS6","Am_CS7",
-#          "VE_CS5","VE_CS6","VE_CS7",
-#          "SYS_CS5","SYS_CS6","SYS_CS7",
-#          "ExMes_CS5","ExMes_CS6","ExMes_CS7","Stalk_CS6","Stalk_CS7",
-#          "Tb_CS5","Tb_CS6","Tb_CS7")
-
-expe2 <- c("EmDisc_#2","EmDisc_#1","Amnioid_#2","Amnioid_#1")
-expe3 <- c("EmDisc_#2","EmDisc_#1","ActA_MEF","ActA_noMEF","FGF_noMEF","CHIR_MEF","Amnioid_#2","Amnioid_#1","BMP_noMEF","BMP_MEF","SB43_MEF")
-
-#subs1 <- which(Idents(mammal.combined) %in% exps)
-#subs2 <- which(Idents(mammal.combined) %in% expe2)
-
-C1 <- cor( as.matrix( log(AvExp$RNA[,expe3]+1) ), as.matrix( log(AvExp$RNA[,expe3] +1) ), method = "pearson")
-mat_breaks <- seq(0.65, 0.85, length.out = 20)
-pheatmap(C1,color =  redblue1(20),gaps_col=c(6), gaps_row=c(5), border_color = NA, cluster_rows=FALSE, cluster_cols=FALSE,  filename = paste(saveext,"/DimRed/InvitroCrossRNA",".pdf",sep="") ,width=3.4,height=3.2)
-
-C1 <- cor( as.matrix( log(AvExp$RNA[,exps]+1) ), as.matrix( log(AvExp$RNA[,expe2] +1) ), method = "pearson")
-mat_breaks <- seq(0.65, 0.85, length.out = 20)
-pheatmap(C1,color =  redblue1(20),gaps_col=c(2), gaps_row=c(5,8,11,14), border_color = NA, cluster_rows=FALSE, cluster_cols=FALSE,  filename = paste(saveext,"/DimRed/InVivoInvitroCrossRNA",".pdf",sep="") ,width=2.6,height=6)
-
-C1 <- cor( as.matrix( log(AvExp$RNA[,exps]+1) ), as.matrix( log(AvExp$RNA[,expe2] +1) ), method = "pearson")
-mat_breaks <- seq(0.6, 0.9, length.out = 20)
-pheatmap(C1,color =  redblue1(20), breaks=mat_breaks,gaps_col=c(2), gaps_row=c(5,8,11,14), border_color = NA, cluster_rows=FALSE, cluster_cols=FALSE,  filename = paste(saveext,"/DimRed/InVivoInvitroCrossRNA2",".pdf",sep="") ,width=2.5,height=6)
-
-
-C1 <- cor( as.matrix( log(AvExp$RNA[,exps]+1) ), as.matrix( log(AvExp$RNA[,expe3] +1) ), method = "pearson")
-mat_breaks <- seq(0.65, 0.85, length.out = 20)
-pheatmap(C1,color =  redblue1(20), breaks=mat_breaks,gaps_col=c(6), gaps_row=c(5,8,11,14), border_color = NA, cluster_rows=FALSE, cluster_cols=FALSE,  filename = paste(saveext,"/DimRed/InVivoInvitroCrossRNA_all",".pdf",sep="") ,width=3.4,height=6)
-
-#LOAD IN THE EMDISC/AMNION only
-marmoset_data_20307 <- CreateSeuratObject(counts = raw_counts20307[,which(Key20307$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_20307) <- Key20307$Primary.Annotation.Old[which(Key20307$QC>0)]
-marmoset_data_20307$Stage <- "CS6"
-marmoset_data_20307 <- subset(marmoset_data_20307, idents = c("EmDisc_Gast_CS6","Am_CS6","EmDisc_CS6","Am_CS6_EmDisc")) #,"Hyp_CS3","ICM_CS3","Tb_CS3","Epi_CS3"))
-marmoset_data_20307 <- NormalizeData(marmoset_data_20307, verbose = FALSE)
-marmoset_data_20307$Dataset <- "InVivo"
-
-marmoset_data_20308 <- CreateSeuratObject(counts = raw_counts20308[,which(Key20308$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_20308) <- Key20308$Primary.Annotation[which(Key20308$QC>0)]
-marmoset_data_20308$Stage <- "CS7"
-marmoset_data_20308 <- subset(marmoset_data_20308, idents = c("EmDisc_Gast_CS7","EmDisc_CS7","Am_CS7","Am_CS7_EmDisc")) #,"ReStroma_CS7")) #,"Hyp_CS3","ICM_CS3","Tb_CS3","Epi_CS3"))
-marmoset_data_20308 <- NormalizeData(marmoset_data_20308, verbose = FALSE)
-marmoset_data_20308$Dataset <- "InVivo"
-
-marmoset_data_Pre <- CreateSeuratObject(counts = raw_countsPre[,which(KeyPre$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_Pre) <- KeyPre$Primary.lineage[which(KeyPre$QC>0)]
-marmoset_data_Pre$LOC <- KeyPre$Location[which(KeyPre$QC>0)]
-marmoset_data_Pre <- subset(marmoset_data_Pre, idents = c("Epi_CS3"))
-marmoset_data_Pre <- NormalizeData(marmoset_data_Pre, verbose = FALSE)
-marmoset_data_Pre$Stage <- "Pre"
-marmoset_data_Pre$Dataset <- "InVivo"
-
-marmoset_data_CRUK <- CreateSeuratObject(counts = raw_countsCRUK[,which(KeyCRUK$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_CRUK) <- KeyCRUK$Primary.Annotation[which(KeyCRUK$QC>0)]
-marmoset_data_CRUK$LOC <- KeyCRUK$Loc[which(KeyCRUK$QC>0)]
-marmoset_data_CRUK$Stage <- KeyCRUK$Stage[which(KeyCRUK$QC>0)]
-marmoset_data_CRUK <- subset(marmoset_data_CRUK, idents = c("EmDisc_CS6","Am_CS7","EmDisc_CS7","Am_CS6","EmDisc_CS5","EmDisc_CS7_Am","Am_CS5_PGC","Am_CS5")) #,"Hyp_CS3","ICM_CS3","Tb_CS3","Epi_CS3"))
-marmoset_data_CRUK <- NormalizeData(marmoset_data_CRUK, verbose = FALSE)
-marmoset_data_CRUK$Dataset <- "InVivo"
-
-marmoset_data_CRUK2 <- CreateSeuratObject(counts = raw_countsCRUK2[,which(KeyCRUK2$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_CRUK2) <- KeyCRUK2$Primary.Annotation[which(KeyCRUK2$QC>0)]
-marmoset_data_CRUK2$LOC <- KeyCRUK2$Loc[which(KeyCRUK2$QC>0)]
-marmoset_data_CRUK2$Stage <- KeyCRUK2$Stage[which(KeyCRUK2$QC>0)]
-marmoset_data_CRUK2 <- subset(marmoset_data_CRUK2, idents = c("EmDisc_CS6","Am_CS6","EmDisc_CS5","Am_CS6_EmDisc","EmDisc_CS6_Gast","EmDisc_CS6_Am")) #,"Hyp_CS3","ICM_CS3","Tb_CS3","Epi_CS3"))
-marmoset_data_CRUK2 <- NormalizeData(marmoset_data_CRUK2, verbose = FALSE)
-marmoset_data_CRUK2Dataset <- "InVivo"
-
-
-marmoset_data_CRUK3 <- CreateSeuratObject(counts = raw_countsCRUK3[,which(KeyCRUK3$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_CRUK3) <- KeyCRUK3$Primary.Annotation[which(KeyCRUK3$QC>0)]
-marmoset_data_CRUK3$LOC <- KeyCRUK3$Loc[which(KeyCRUK3$QC>0)]
-marmoset_data_CRUK3$Stage <- KeyCRUK3$Stage[which(KeyCRUK3$QC>0)]
-marmoset_data_CRUK3 <- subset(marmoset_data_CRUK3, idents = c("Am_CS6","Am_CS7","EmDisc_CS7","EmDisc_CS6","EmDisc_CS7_Gast")) #,"Stroma_CS6")) 
-marmoset_data_CRUK3 <- NormalizeData(marmoset_data_CRUK3, verbose = FALSE)
-marmoset_data_CRUK3$Dataset <- "InVivo"
-
 #marmoset_data_CRUK3 <- CreateSeuratObject(counts = raw_countsCRUK3[,which(KeyCRUK3$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
 #Idents(marmoset_data_CRUK3) <- KeyCRUK3$Primary.Annotation[which(KeyCRUK3$QC>0)]
 #marmoset_data_CRUK3$LOC <- KeyCRUK3$Loc[which(KeyCRUK3$QC>0)]
@@ -519,101 +100,102 @@ marmoset_data_CRUK3$Dataset <- "InVivo"
 #marmoset_data_CRUK3 <- NormalizeData(marmoset_data_CRUK3, verbose = FALSE)
 #marmoset_data_CRUK3$Dataset <- "InVivo"
 
-marmoset_data_CS5 <- CreateSeuratObject(counts = raw_countsCS5[,which(KeyCS5$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_CS5) <- KeyCS5$Primary.Annotation[which(KeyCS5$QC>0)]
-marmoset_data_CS5$LOC <- KeyCS5$Location[which(KeyCS5$QC>0)]
-marmoset_data_CS5$Stage <- "CS5"
-marmoset_data_CS5 <- subset(marmoset_data_CS5, idents = c("EmDisc_CS5","Am_CS5","Am_CS5_PGC","EmDisc_CS5_Am")) #","Gland_CS5","ReGland_CS5","ReStroma_CS5")) 
-marmoset_data_CS5 <- NormalizeData(marmoset_data_CS5, verbose = FALSE)
-marmoset_data_CS5$Dataset <- "InVivo"
+#marmoset_data_CS5 <- CreateSeuratObject(counts = raw_countsCS5[,which(KeyCS5$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
+#Idents(marmoset_data_CS5) <- KeyCS5$Primary.Annotation[which(KeyCS5$QC>0)]
+#marmoset_data_CS5$LOC <- KeyCS5$Location[which(KeyCS5$QC>0)]
+#marmoset_data_CS5$Stage <- "CS5"
+#marmoset_data_CS5 <- subset(marmoset_data_CS5, idents = c("Tb_CS5","ExMes_CS5","EmDisc_CS5","SYS_CS5","Am_CS5","VE_CS5","Am_CS5_PGC","EmDisc_CS5_Am")) #","Gland_CS5","ReGland_CS5","ReStroma_CS5")) 
+#marmoset_data_CS5 <- NormalizeData(marmoset_data_CS5, verbose = FALSE)
+#marmoset_data_CS5$Dataset <- "InVivo"
 
-marmoset_data_CS6 <- CreateSeuratObject(counts = raw_countsCS6[,which(KeyCS6$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_CS6) <- KeyCS6$Primary.Anotation[which(KeyCS6$QC>0)]
-marmoset_data_CS6$LOC <- KeyCS6$Location[which(KeyCS6$QC>0)]
-marmoset_data_CS6$Stage <- "CS6"
-marmoset_data_CS6 <- subset(marmoset_data_CS6, idents = c("EmDisc_CS6","Am_CS6","EmDisc_gast_CS6")) #,"Gland_CS6","Stroma_CS6","ReStroma_CS6"))
-marmoset_data_CS6 <- NormalizeData(marmoset_data_CS6, verbose = FALSE)
-marmoset_data_CS6$Dataset <- "InVivo"
+#marmoset_data_CS6 <- CreateSeuratObject(counts = raw_countsCS6[,which(KeyCS6$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
+#Idents(marmoset_data_CS6) <- KeyCS6$Primary.Anotation[which(KeyCS6$QC>0)]
+#marmoset_data_CS6$LOC <- KeyCS6$Location[which(KeyCS6$QC>0)]
+#marmoset_data_CS6$Stage <- "CS6"
+#marmoset_data_CS6 <- subset(marmoset_data_CS6, idents = c("Tb_CS6","ExMes_CS6","EmDisc_CS6","SYS_CS6","Am_CS6","VE_CS6","PGC_CS6","EmDisc_gast_CS6","EmDisc_stalk_CS6")) #,"Gland_CS6","Stroma_CS6","ReStroma_CS6"))
+#marmoset_data_CS6 <- NormalizeData(marmoset_data_CS6, verbose = FALSE)
+#marmoset_data_CS6$Dataset <- "InVivo"
 
-marmoset_data_CS7 <- CreateSeuratObject(counts = raw_countsCS7[,which(KeyCS7$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
-Idents(marmoset_data_CS7) <- KeyCS7$Primary.Annotation[which(KeyCS7$QC>0)]
-marmoset_data_CS7$Stage <- "CS7"
-marmoset_data_CS7$LOC <- KeyCS7$Location[which(KeyCS7$QC>0)]
-marmoset_data_CS7 <- subset(marmoset_data_CS7, idents = c("EmDisc_CS7","Am_CS7")) #"Gland_CS7","ReStroma_CS7","ReGland_CS7","Myo_CS7")) 
-marmoset_data_CS7 <- NormalizeData(marmoset_data_CS7, verbose = FALSE)
-marmoset_data_CS7$Dataset <- "InVivo"
-
+#marmoset_data_CS7 <- CreateSeuratObject(counts = raw_countsCS7[,which(KeyCS7$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
+#Idents(marmoset_data_CS7) <- KeyCS7$Primary.Annotation[which(KeyCS7$QC>0)]
+#marmoset_data_CS7$Stage <- "CS7"
+#marmoset_data_CS7$LOC <- KeyCS7$Location[which(KeyCS7$QC>0)]
+#marmoset_data_CS7 <- subset(marmoset_data_CS7, idents = c("Tb_CS7","ExMes_CS7","EmDisc_CS7","SYS_CS7","Am_CS7","Stalk_CS7_PGC","EmDisc_CS7_PGC","ExMes_stalk_CS7","EmDisc_stalk_CS7","Stalk_CS7")) #"Gland_CS7","ReStroma_CS7","ReGland_CS7","Myo_CS7")) 
+#marmoset_data_CS7 <- NormalizeData(marmoset_data_CS7, verbose = FALSE)
+#marmoset_data_CS7$Dataset <- "InVivo"
 
 #marmoset_dataInVivo <- merge(marmoset_data_CS5, y = c(marmoset_data_Pre,marmoset_data_CS6,marmoset_data_CS7,marmoset_data_CRUK,marmoset_data_CRUK2,marmoset_data_CRUK3,marmoset_data_20307,marmoset_data_20308), project = "merged")
-#marmoset_dataInVivo <- merge(marmoset_data_CS5, y = c(marmoset_data_Pre2,marmoset_data_CS6,marmoset_data_CS7,marmoset_data_CRUK,marmoset_data_CRUK2,marmoset_data_CRUK3,marmoset_data_20307,marmoset_data_20308), project = "merged")
-marmoset_dataInVivo <- merge(marmoset_data_CS5, y = c(marmoset_data_CS6,marmoset_data_CS7,marmoset_data_CRUK,marmoset_data_CRUK2,marmoset_data_CRUK3,marmoset_data_20307,marmoset_data_20308), project = "merged")
+#marmoset_dataInVivo$Dataset <- "2) Marmoset in vivo"
 
-marmoset_dataInVivo$Dataset <- "2) Marmoset in vivo"
+#marmoset_dataInVivo2 <- marmoset_dataInVivo
+#marmoset_dataInVivo2 <- FindVariableFeatures(marmoset_dataInVivo2, selection.method = "vst", nfeatures = 20000)
+#marmoset_dataInVivo2 <- ScaleData(marmoset_dataInVivo2, verbose = FALSE)
+#marmoset_dataInVivo2 <- RunPCA(marmoset_dataInVivo2, npcs = 20, verbose = FALSE)
+#marmoset_dataInVivo2 <- RunUMAP(marmoset_dataInVivo2, reduction = "pca", dims = 1:20)
+#marmoset_dataInVivo2 <- RunTSNE(marmoset_dataInVivo2, reduction = "pca", dims = 1:20)
+#marmoset_dataInVivo2 <- FindNeighbors(marmoset_dataInVivo2, reduction = "pca", dims = 1:20)
+
+cType <- c("2307","2308","Other","Zy_CS1","4-cell_CS2","8-cell_CS2","cMor_CS2","ICM_CS3","Epi_CS3","Tb_CS3","Hyp_CS3","EmDisc_CS5","EmDisc_CS6","EmDisc_CS7","Am_CS5","Am_CS6","Am_CS7","VE_CS5","VE_CS6","VE_CS7","SYS_CS5","SYS_CS6","SYS_CS7","Tb_CS5","Tb_CS6","Tb_CS7","ExMes_CS5","ExMes_CS6","ExMes_CS7","Stalk_CS7","PGC_CS5","PGC_CS6","PGC_CS7","Gland_CS5","Gland_CS6","Gland_CS7","ReGland_CS5","ReGland_CS7","Myo_CS7","VE_CS4","Epi_CS4","Tb_CS4","Hyp_CS4","EmDisc_CS6/7","ExMes_CS6/7","PGC_CS6/7","SYS_CS6/7","Tb_CS6/7","Am","Amnoid_bead","BMP_MEF","BMP_noMEF","EmD","EmDisc","ActA_MEF","ActA_noMEF","SB43_MEF","CHIR_MEF","FGF_noMEF","Am_CS5_PGC","Am_CS5_ExMesPGC","EmDisc_CS5_Am","PGC_CS6","Stalk_CS7_PGC","EmDisc_CS7_PGC","EmDisc_CS7_Am","Am_CS6_EmDisc","EmDisc_CS5_Gast","EmDisc_CS6_Am","EmDisc_CS6_Gast","EmDisc_CS7_Gast","Stalk_CS7_PGC","Gland_CS6_","ReStroma_CS5","ReStroma_CS6","ReStroma_CS7","Stroma_CS5","Stroma_CS6","Stroma_CS7","VE_CS6","VE_CS7","Am_CS7_EmDisc","EmDisc_Gast_CS6","EmDisc_Gast_CS7","Stalk_CS6")
+BaseCol <- c("lightgrey","lightgrey","lightgrey","#56E600","#48BF00","#00BF30","#009926","#00E6E6","#00BFBF","#BF0489","#E6B500","#0c9cf5","#0767DA","#0233BF","#877bd6","#5F54C7","#1A0873","#F04C04","#D74404","#BF3C04","#E68600","#d17600","#BF7104","#921FE6","#8017c2","#7108a6","#e6c800","#c49a00","#967700","#967700","#E6E600","#E6E600","#E6E600","#C0C0C0","#C0C0C0","#C0C0C0","#A9A9A9","#A9A9A9","#E6E6FA","#F04C04","#00BFBF","#BF0489","#E6B500","#0767DA","#c49a00","#E6E600","#d17600","#8017c2","#7b3294","#c2a5cf","#a6dba0","#008837","#ca0020","#f4a582","#92c5de","#0571b0","#d8b365","#5ab4ac","#4d4d4d","#E6E600","#E6E600","#E6E600","#E6E600","#E6E600","#E6E600","#0233BF","#5F54C7","#0c9cf5","#0767DA","#0767DA","#0233BF","#E6E600","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0","#C0C0C0",'#D74404',"black","#5F54C7","#0767DA","#0233BF","#c49a00")
+
+#colind <- integer( length( levels(Idents(marmoset_dataInVivo2)) )  )
+#for (i in 1:length( levels(Idents(marmoset_dataInVivo2)) ) ) {
+#  colind[i] <- which(cType==levels(Idents(marmoset_dataInVivo2))[i])
+#}
+#coluse <- BaseCol[colind]
+
+#DimPlot(marmoset_dataInVivo2, cols = coluse, pt.size = 4, reduction = "umap", split.by = "Dataset", label = TRUE, repel = TRUE) 
+#ggsave(filename=paste(saveext,"/DimRed/UMAP_All.pdf",sep=""),width = 20, height = 16, useDingbats = FALSE)
+
+#DimPlot(marmoset_dataInVivo2, cols = coluse, pt.size = 4, reduction = "pca", split.by = "Dataset", label = TRUE, repel = TRUE) 
+#ggsave(filename=paste(saveext,"/DimRed/PCA_All.pdf",sep=""),width = 20, height = 16, useDingbats = FALSE)
+
+#DimPlot(marmoset_dataInVivo2, cols = coluse, pt.size = 4, reduction = "tsne", split.by = "Dataset", label = TRUE, repel = TRUE) 
+#ggsave(filename=paste(saveext,"/DimRed/TSNE_All.pdf",sep=""),width = 20, height = 16, useDingbats = FALSE)
 
 
-marmoset_dataInVivo <- FindVariableFeatures(marmoset_dataInVivo, selection.method = "vst", nfeatures = 20000)
-marmoset_dataInVivo <- ScaleData(marmoset_dataInVivo, verbose = FALSE)
+#KeyInVitro <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/InVitro/InVitroKey_merged.csv",sep=",",header = T, row.names=1) 
+#raw_countsInVitro <- read.table("/Volumes/GoogleDrive/My\ Drive/Marmoset_shared_folder/Annotations_and_manifests/Chris_sequencing\ data/InVitro/featurecountsInVitro_merged.csv",sep=",",header = T, row.names=1)
 
-saveRDS(marmoset_dataInVivo,"~/Desktop/FinalMarmoset.rds")
+#marmoset_data_InVitro <- CreateSeuratObject(counts = raw_countsInVitro[,which(KeyInVitro$QC>0)], assay = "RNA",min.cells = 0, min.features = 0)
+#Idents(marmoset_data_InVitro) <- KeyInVitro$Primary.lineage[which(KeyInVitro$QC>0)]
+#marmoset_data_InVitro$LOC <- "Invitro"
+#marmoset_data_InVitro <- subset(marmoset_data_InVitro, idents = c("EmD","EmDisc","Am","Amnoid_bead","CHIR_MEF","SB43_MEF","BMP_MEF","ActA_MEF","FGF_noMEF","BMP_noMEF","ActA_noMEF"))
+#marmoset_data_InVitro <- NormalizeData(marmoset_data_InVitro, verbose = FALSE)
+#marmoset_data_InVitro$Stage <- "Invitro"
+#marmoset_data_InVitro$Dataset <- "InVitro"
 
-
+#marmoset_dataInVivo <- merge(marmoset_data_CS5, y = c(marmoset_data_Pre,marmoset_data_CS6,marmoset_data_CS7,marmoset_data_CRUK,marmoset_data_CRUK2,marmoset_data_CRUK3,marmoset_data_20307,marmoset_data_20308,marmoset_data_InVitro), project = "merged")
+#marmoset_dataInVivo$Dataset <- "2) Marmoset in vivo"
+#marmoset_dataInVivo2 <- marmoset_dataInVivo
+#marmoset_dataInVivo2 <- FindVariableFeatures(marmoset_dataInVivo2, selection.method = "vst", nfeatures = 3000)
+#marmoset_dataInVivo2 <- ScaleData(marmoset_dataInVivo2, verbose = FALSE)
+#marmoset_dataInVivo2 <- RunPCA(marmoset_dataInVivo2, npcs = 20, verbose = FALSE)
+#marmoset_dataInVivo2 <- RunUMAP(marmoset_dataInVivo2, reduction = "pca", dims = 1:20)
+#marmoset_dataInVivo2 <- RunTSNE(marmoset_dataInVivo2, reduction = "pca", dims = 1:20)
+#marmoset_dataInVivo2 <- FindNeighbors(marmoset_dataInVivo2, reduction = "pca", dims = 1:20)
 
 #Rename to keep variable convention for the join species modelling
-mammal.anchors <- FindIntegrationAnchors(object.list = list(marmoset_dataInVivo, marmoset_data_InVitro), dims = 1:20, anchor.features = 5000)
-mammal.combined <- IntegrateData(anchorset = mammal.anchors, dims = 1:20)
-DefaultAssay(mammal.combined) <- "integrated"
+#mammal.anchors <- FindIntegrationAnchors(object.list = list(marmoset_dataInVivo, marmoset_data_InVitro), dims = 1:20, anchor.features = 5000)
+#mammal.combined <- IntegrateData(anchorset = mammal.anchors, dims = 1:20)
+#DefaultAssay(mammal.combined) <- "integrated"
 #mammal.combined <- merge(marmoset_data, y = c(marmoset_data2), project = "merged")
 #mammal.combined <- FindVariableFeatures(mammal.combined, selection.method = "vst", nfeatures = 20000)
 
-mammal.combined <- ScaleData(mammal.combined, verbose = FALSE)
-mammal.combined <- RunPCA(mammal.combined, npcs = 20, verbose = FALSE)
-mammal.combined <- RunUMAP(mammal.combined, reduction = "pca", dims = 1:20)
-mammal.combined <- RunTSNE(mammal.combined, reduction = "pca", dims = 1:20)
-mammal.combined <- FindNeighbors(mammal.combined, reduction = "pca", dims = 1:20)
+#mammal.combined <- ScaleData(mammal.combined, verbose = FALSE)
+#mammal.combined <- RunPCA(mammal.combined, npcs = 20, verbose = FALSE)
+#mammal.combined <- RunUMAP(mammal.combined, reduction = "pca", dims = 1:20)
+#mammal.combined <- RunTSNE(mammal.combined, reduction = "pca", dims = 1:20)
+#mammal.combined <- FindNeighbors(mammal.combined, reduction = "pca", dims = 1:20)
 
-
-newID <- as.character(Idents(mammal.combined))
-newID[which(newID=="Am_CS5_PGC")] <- "Am_CS5"
-newID[which(newID=="EmDisc_CS5_Am")] <- "EmDisc_CS5"
-newID[which(newID=="EmDisc_gast_CS6 ")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_Gast_CS6")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_stalk_CS6")] <- "Stalk_CS6"
-newID[which(newID=="EmDisc_stalk_CS7")] <- "Stalk_CS7"
-newID[which(newID=="Stalk_CS7_PGC")] <- "PGC_CS7"
-newID[which(newID=="EmDisc_CS7_PGC")] <- "PGC_CS7"
-newID[which(newID=="ExMes_stalk_CS7")] <- "Stalk_CS7"
-newID[which(newID=="EmDisc_CS7_Am")] <- "EmDisc_CS7"
-newID[which(newID=="EmDisc_CS7_Am")] <- "EmDisc_CS7"
-newID[which(newID=="Am_CS6_EmDisc")] <- "Am_CS6"
-newID[which(newID=="EmDisc_CS6_Gast")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_gast_CS6")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_CS6_Am")] <- "EmDisc_CS6"
-newID[which(newID=="EmDisc_Stalk_CS6")] <- "Stalk_CS6"
-newID[which(newID=="EmDisc_Gast_CS7")] <- "EmDisc_CS7"
-newID[which(newID=="EmDisc_CS7_Gast")] <- "EmDisc_CS7"
-newID[which(newID=="EmDisc_CS6_Gast")] <- "EmDisc_CS6"
-newID[which(newID=="Am_CS7_EmDisc")] <- "Am_CS7"
-newID[which(newID=="cMor_CS3")] <- "cMor_CS2"
-
-newID[which(newID=="EmD")] <- "EmDisc_#1"
-newID[which(newID=="EmDisc")] <- "EmDisc_#2"
-
-newID[which(newID=="Am")] <- "Amnioid_#1"
-newID[which(newID=="Amnoid_bead")] <- "Amnioid_#2"
-Idents(mammal.combined) <- newID
-mammal.combined$Cells <- Idents(mammal.combined)
-
+#Read in aligned datasets
+mammal.combined <- readRDS("Data/Amnioids_aligned.rds")
 
 colind <- integer( length( levels(Idents(mammal.combined)) )  )
 for (i in 1:length( levels(Idents(mammal.combined)) ) ) {
   colind[i] <- which(cType==levels(Idents(mammal.combined))[i])
 }
 coluse <- BaseCol[colind]
-
-#EmD EmDisc_#1
-#EmDisc EmDisc_#2
-#Am Amnioid_#1
-#Amnoid_bead Amnioid_#2
 
 cluster_letters <- LETTERS[mammal.combined$orig.ident]
 cluster_letters[1:length(cluster_letters)] <- 0
@@ -643,8 +225,6 @@ DimPlot(mammal.combined, cols = coluse, pt.size = 4, shape.by =  "cell.orig", re
 ggsave(filename=paste(saveext,"/DimRed/UMAP_Type_Lab","_merge4.pdf",sep=""),width = 12, height = 8, useDingbats = FALSE)
 
 saveRDS(mammal.combined, file=paste(saveext,"/Amnioids_aligned.rds",sep=""))
-
-
 
 
 mammal.combined2 <- subset(mammal.combined,idents=c("CHIR_MEF","SB43_MEF","BMP_MEF","ActA_MEF","FGF_noMEF","BMP_noMEF","ActA_noMEF"),invert=TRUE)
@@ -689,19 +269,12 @@ xgrid = make.grid(as.matrix(dat[,1:2]))
 ygrid = predict(svmfit, xgrid)
 func = predict(svmfit, xgrid, decision.values = TRUE)
 func = attributes(func)$decision
-#xgrid = expand.grid(X1 = px1, X2 = px2)
-#ygrid = predict(fit, xgrid)
 plot(xgrid, col = as.numeric(ygrid), pch = 20, cex = .2)
 points(as.matrix(dat[,1:2]), col = as.factor(dat$ID), pch = 19)
-#points(as.matrix(dat[,1:2]), col = as.factor(dat$ID) + 1, pch = 19)
-#https://www.datacamp.com/community/tutorials/support-vector-machines-r
-
-#contour(px1, px2, matrix(func, 69, 99), level = 0, add = TRUE)
 contour(seq(min(dat[,1]),max(dat[,1]),length.out=100), seq(min(dat[,2]),max(dat[,2]),length.out=100), matrix(func, 100, 100), level = 0.5, add = TRUE, col = "blue", lwd = 2)
-
 contour(seq(0,1,length.out=100), seq(0,1,length.out=100), matrix(func, 100, 100), level = 0.5, add = TRUE, col = "blue", lwd = 2)
 
-
+#Plot example expression
 DefaultAssay(mammal.combined2) <- "RNA"
 FeaturePlot(mammal.combined2,  reduction = "pca", features = "ISL1", combine=TRUE, split.by = "Dataset", cols =  c("lightgrey", "black"), pt.size = 4)
 ggsave(filename=paste(saveext,"/DimRed/PCA_expression_ISL1.pdf",sep=""),width =16, height = 8, useDingbats = FALSE)
@@ -929,16 +502,15 @@ ggsave(filename=paste(saveext,"/DimRed/UMAP_amnioids_FOXA2.pdf",sep=""),width = 
 FeaturePlot(mammal.combined2,  reduction = "pca", features = "FOXA2", combine=TRUE, split.by = "Dataset", cols =  c("lightgrey", "black"), pt.size = 4)
 ggsave(filename=paste(saveext,"/DimRed/PCA_amnioids_FOXA2.pdf",sep=""),width = 16, height = 8)
 
-#AvExp <- AverageExpression(marmoset_dataInVivo)
 #Now redo volcano plots
 AvExp <- AverageExpression(mammal.combined)
 Ae <- AvExp$RNA
 Ae$gene <- rownames(Ae)
-SIGNAL<-read.table("/Users/christopherpenfold/Desktop/LigandReceptor.csv",sep=",",header = F)
+SIGNAL<-read.table("Data/LigandReceptor.csv",sep=",",header = F)
 SIGNAL1 <- SIGNAL$V1[SIGNAL$V2=="Receptor" | SIGNAL$V2=="ECM/Receptor/Ligand" | SIGNAL$V2=="Receptor/Ligand" | SIGNAL$V2=="ECM/Receptor"]
 SIGNAL2 <- SIGNAL$V1[SIGNAL$V2=="Ligand" | SIGNAL$V2=="ECM/Receptor/Ligand" | SIGNAL$V2=="Receptor/Ligand" | SIGNAL$V2=="ECM/Ligand"]
 SIGNAL3 <- SIGNAL$V1[SIGNAL$V2=="ECM" | SIGNAL$V2=="ECM/Receptor/Ligand" | SIGNAL$V2=="ECM/Ligand" | SIGNAL$V2=="ECM/Receptor"]
-TF<-read.table("/Users/christopherpenfold/Desktop/Toshiaki/UberA/TF.txt",header = F)
+TF<-read.table("Data/TF.txt",header = F)
 TF <- TF$V1
 
 #Now do the volcano plots
